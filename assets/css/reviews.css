@@ -1,0 +1,338 @@
+\Desktop\logic\assets\css\reviews.css
+/* 評論管理頁面樣式 */
+
+.page-title {
+  padding-top: 130px;
+  padding-bottom: 30px;
+  background-color: var(--color-light);
+}
+
+#main {
+  padding-top: 70px; /* 根據您的導航欄高度調整這個值 */
+}
+
+.review-management .nav-tabs .nav-link {
+  color: var(--color-default);
+  font-weight: 500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 16px;
+}
+
+.review-management .nav-tabs .nav-link.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.review-management .form-select,
+.review-management .form-control {
+  border-radius: 8px;
+  padding: 10px 16px;
+}
+
+.review-management .btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  border-radius: 8px;
+  padding: 10px 20px;
+}
+
+/* 評論框樣式改進 - 模仿圖片中的樣式 */
+.testimonial-item {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: all 0.3s ease;
+  margin-left: 0 !important;
+  border: none;
+  position: relative;
+}
+
+.testimonial-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* 用戶名稱樣式 */
+.testimonial-item h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+/* 用戶角色樣式 */
+.testimonial-item h4 {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* 星級評分樣式 */
+.stars {
+  margin: 16px 0;
+}
+
+.stars i {
+  color: #FFD700; /* 更鮮豔的黃金色 */
+  font-size: 20px;
+  margin-right: 3px;
+}
+
+/* 評論內容樣式 */
+.testimonial-item p {
+  position: relative;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #444;
+  margin: 20px 0;
+}
+
+/* 引號樣式 */
+.quote-icon-left {
+  color: #A6D1E6; /* 淺藍色引號 */
+  font-size: 36px;
+  font-family: 'Georgia', serif;
+  line-height: 0;
+  margin: 0 8px 0 0;
+  opacity: 0.8;
+  content: '\201C'; /* 左引號 Unicode */
+}
+
+.quote-icon-right {
+  color: #A6D1E6; /* 淺藍色引號 */
+  font-size: 36px;
+  font-family: 'Georgia', serif;
+  line-height: 0;
+  margin: 0 0 0 8px;
+  opacity: 0.8;
+  content: '\201D'; /* 右引號 Unicode */
+}
+
+/* 日期樣式 */
+.testimonial-item .text-muted {
+  font-size: 14px;
+  color: #999 !important;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rating-select {
+  display: flex;
+  margin-left: 10px;
+}
+
+.rating-select i {
+  color: #ffc107;
+  font-size: 24px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.stars i {
+  color: #ffc107;
+  font-size: 18px;
+  margin-right: 2px;
+}
+
+
+.card .btn-outline-secondary,
+.card .btn-outline-danger {
+  padding: 4px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.auth-info {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+.btn-user {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  font-weight: 500;
+}
+
+.btn-signin,
+.btn-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.btn-signin {
+  color: var(--color-primary);
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+}
+
+.btn-signup {
+  color: #fff;
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+#auth-container .card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.pagination .page-link {
+  color: var(--color-primary);
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .testimonial-item {
+    padding: 20px;
+  }
+  
+  .testimonial-item h3 {
+    font-size: 20px;
+  }
+  
+  .testimonial-item p {
+    font-size: 16px;
+  }
+  
+  .quote-icon-left,
+  .quote-icon-right {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonial-item {
+    padding: 15px;
+  }
+  
+  .testimonial-img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .rating-select i {
+    font-size: 20px;
+  }
+}
+
+.avatar-preview {
+  display: none !important;
+}
+
+.upload-area {
+  flex: 1;
+}
+
+.section-header h2 {
+  margin-top: 10px;
+  padding-top: 20px;
+}
+
+/* 調整在小螢幕上的響應式樣式 */
+@media (max-width: 768px) {
+  .page-title {
+    padding-top: 100px;
+  }
+  
+  #main {
+    padding-top: 60px;
+  }
+}
+
+/* 新增評論表單 */
+.new-review-section {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.new-review-section .form-group {
+  margin-bottom: 20px;
+}
+
+/* 評論的星星樣式統一 */
+.rating-stars i {
+  color: #ffc107;
+  font-size: 24px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.section-subtitle {
+  padding-top: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 10; /* 提高層級，確保不被其他元素遮擋 */
+}
+
+/* 調整標題容器的位置 */
+.section-header {
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 10;
+}
+
+/* 評論回覆相關樣式 */
+.comments-section {
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.comment-item {
+  margin-bottom: 0.75rem;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
+.comment-author {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.comment-text {
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.comment-date {
+  font-size: 0.75rem;
+}
+
+.reply-input {
+  border-right: none;
+}
+
+.comments-count {
+  font-size: 0.8rem;
+}
+
+.load-more-comments {
+  padding: 0;
+  font-size: 0.85rem;
+}

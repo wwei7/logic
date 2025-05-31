@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>產品詳情 - Beauty Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .product-large-img {
+        max-height: 450px;
+        width: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+        transition: transform 0.5s ease;
+    }
+    .product-large-img:hover {
+    transform: scale(1.02);
+    }
+    .product-thumbnail {
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+    .product-thumbnail:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+  
+    .product-thumbnail.active {
+        border-color: var(--primary-color);
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(var(--primary-color-rgb), 0.3);
+    }
+    .product-info {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+    .review-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .product-details-tabs .nav-link {
+      color: #555;
+      font-weight: 600;
+      padding: 10px 20px;
+      border: none;
+      border-bottom: 2px solid transparent;
+    }
+    .product-details-tabs .nav-link.active {
+      background-color: transparent;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+    .product-details {
+    padding: 80px 0 50px;
+    background-color: #fafafa;
+    }
+    .product-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #333 0%, #666 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .product-meta {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+  }
+  
+  .product-price {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 20px 0;
+  }
+    .ingredients-list {
+      columns: 2;
+    }
+    .ingredients-list li {
+      margin-bottom: 8px;
+    }
+    .comment-form {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 25px;
+    }
+    .review-item {
+    background-color: #fff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+  }
+  
+  .review-item:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+  }
+  
+  .review-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .reviewer-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  .review-date {
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+  .review-content {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+  .review-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  .rating-input {
+    cursor: pointer;
+    font-size: 1.5rem; /* 放大星星 */
+    transition: transform 0.2s, color 0.2s;
+  }
+  
+  .rating-input:hover {
+    transform: scale(1.2); /* 懸停時放大效果 */
+    color: #ffc107 !important;
+  }
+  
+  .rating-input.text-warning {
+    color: #ffc107 !important; /* 強制使用明亮的黃色 */
+  }
+  
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .main-image-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background-color: #fff;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .main-image-container:hover {
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+  }
+  /* 提交中動畫 */
+  .spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+  }
+  @media (max-width: 768px) {
+    .rating-input {
+      font-size: 1.8rem; /* 在行動裝置上更大的星星 */
+      padding: 5px; /* 增加點擊區域 */
+    }
+  }
+  
+  </style>
+</head>
+
+<body>
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 class="sitename">BeautySort</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#product">Products</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <div class="auth-buttons">
+        <a class="btn-login" id="login-btn" href="log.html">Get Started</a>
+        <div id="user-profile-header" class="user-profile-header" style="display: none;">
+          <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="assets/img/head.jpg" id="user-avatar-header" class="rounded-circle me-2" width="32" height="32" alt="User Avatar">
+              <span id="user-name-header"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
+              <li><a class="dropdown-item" href="reviews.html#my-reviews-tab">我的評論</a></li>
+              <li><a class="dropdown-item" href="#" id="profile-btn">個人資料</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logout-btn">登出</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="main" style="margin-top: 80px;">
+
+    <!-- Product Details Section -->
+    <section class="product-details section">
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">首頁</a></li>
+              <li class="breadcrumb-item"><a href="index.html#features">產品</a></li>
+              <li class="breadcrumb-item active product-category-bc" aria-current="page">類別</li>
+              <li class="breadcrumb-item active product-name-bc" aria-current="page">產品名稱</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="row gy-4">
+          <!-- Product Images -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="product-images">
+              <div class="main-image-container mb-3">
+                <img id="main-product-image" src="assets/img/eyeshadow1.jpg" alt="產品主圖" class="img-fluid product-large-img">
+              </div>
+              <div class="thumbnails-container">
+                <div class="row g-2" id="product-thumbnails">
+                  <!-- 產品縮圖會在此動態添加 -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Info -->
+          <div class="col-lg-6 product-info" data-aos="fade-up" data-aos-delay="300">
+            <h1 id="product-name" class="product-title mb-3">產品名稱</h1>
+            
+            <div class="product-meta mb-4">
+              <div class="product-rating mb-2">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+                <span id="product-rating-display" class="ms-2">4.5 (120)</span>
+              </div>
+              <div class="product-sku">
+                <span>SKU: </span><span id="product-sku">MK-100</span>
+              </div>
+            </div>
+            
+            <div class="product-price mb-4">
+              <h3><span id="product-price">$590</span></h3>
+            </div>
+            
+            <div class="product-description mb-4">
+              <p id="product-short-desc">產品簡短描述將在這裡顯示。</p>
+            </div>
+            
+            <div class="product-features mb-4">
+              <h5>產品特點：</h5>
+              <ul id="product-features-list">
+                <!-- 產品特點將在此動態添加 -->
+              </ul>
+            </div>
+            
+            <div class="product-share mt-4">
+              <span>分享：</span>
+              <a href="#" class="me-2"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="me-2"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="me-2"><i class="bi bi-twitter-x"></i></a>
+              <a href="#" class="me-2"><i class="bi bi-line"></i></a>
+              <a href="#" class="me-2"><i class="bi bi-pinterest"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Details Tabs -->
+        <div class="row mt-5" data-aos="fade-up" data-aos-delay="400">
+          <div class="col-12">
+            <ul class="nav nav-tabs product-details-tabs" id="productDetailTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description-content" type="button" role="tab">詳細資訊</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients-content" type="button" role="tab">成分表</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="howtouse-tab" data-bs-toggle="tab" data-bs-target="#howtouse-content" type="button" role="tab">使用方法</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews-content" type="button" role="tab">評論 <span id="review-count">(0)</span></button>
+              </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content p-4 border-start border-end border-bottom rounded-bottom mb-5" id="productDetailTabContent">
+              <!-- Description Tab -->
+              <div class="tab-pane fade show active" id="description-content" role="tabpanel">
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div id="product-full-desc">
+                      <!-- 產品詳細描述將在此動態添加 -->
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="card border-0 bg-light p-3 mb-4">
+                      <h5>產品規格</h5>
+                      <ul class="list-unstyled" id="product-specs">
+                        <!-- 產品規格將在此動態添加 -->
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ingredients Tab -->
+              <div class="tab-pane fade" id="ingredients-content" role="tabpanel">
+                <h5>成分清單</h5>
+                <p class="mb-3">本產品使用高品質原料，確保安全與有效性</p>
+                <ul class="ingredients-list list-unstyled" id="ingredients-list">
+                  <!-- 成分將在此動態添加 -->
+                </ul>
+                <div class="alert alert-info mt-3">
+                  <i class="bi bi-info-circle me-2"></i>如有任何過敏反應或特殊肌膚狀況，請先諮詢專業皮膚科醫師。
+                </div>
+              </div>
+
+              <!-- How to Use Tab -->
+              <div class="tab-pane fade" id="howtouse-content" role="tabpanel">
+                <h5>使用方式</h5>
+                <div id="usage-instructions">
+                  <!-- 使用方法將在此動態添加 -->
+                </div>
+              </div>
+
+              <!-- Reviews Tab -->
+              <div class="tab-pane fade" id="reviews-content" role="tabpanel">
+                <div class="reviews-summary mb-4">
+                  <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                      <h2 class="display-4" id="average-rating">4.5</h2>
+                      <div class="rating-large mb-2">
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-fill fs-4"></i>
+                        <i class="bi bi-star-half fs-4"></i>
+                      </div>
+                      <p><span id="rating-count">120</span> 位用戶評分</p>
+                    </div>
+                    <div class="col-md-9">
+                      <div class="rating-bars">
+                        <div class="row mb-2 align-items-center">
+                          <div class="col-3 col-md-2">5 星</div>
+                          <div class="col-7 col-md-8">
+                            <div class="progress">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mb-2 align-items-center">
+                          <div class="col-3 col-md-2">4 星</div>
+                          <div class="col-7 col-md-8">
+                            <div class="progress">
+                              <div class="progress-bar bg-success" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="row mb-2 align-items-center">
+                          <div class="col-3 col-md-2">3 星</div>
+                          <div class="col-7 col-md-8">
+                            <div class="progress">
+                              <div class="progress-bar bg-warning" role="progressbar" style="width: 6%" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="row mb-2 align-items-center">
+                          <div class="col-3 col-md-2">2 星</div>
+                          <div class="col-7 col-md-8">
+                            <div class="progress">
+                              <div class="progress-bar bg-danger" role="progressbar" style="width: 3%" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="row align-items-center">
+                          <div class="col-3 col-md-2">1 星</div>
+                          <div class="col-7 col-md-8">
+                            <div class="progress">
+                              <div class="progress-bar bg-danger" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Customer Reviews -->
+                <div class="customer-reviews mb-4">
+                  <h5>顧客評論</h5>
+                  <div id="reviews-container">
+                    <!-- 評論將在此動態添加 -->
+                    <div class="text-center py-4" id="no-reviews-message">
+                      <p>目前還沒有評論，成為第一個評論的人吧！</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Review Form -->
+                <div class="review-form-section mb-4">
+                  <h5>分享您的體驗</h5>
+                  <div class="comment-form">
+                    <form id="product-review-form">
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label for="reviewer-name" class="form-label">您的名字</label>
+                          <input type="text" class="form-control" id="reviewer-name" required>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="reviewer-email" class="form-label">電子郵件</label>
+                          <input type="email" class="form-control" id="reviewer-email" required>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label">評分</label>
+                          <div class="product-rating mb-2">
+                            <i class="bi bi-star rating-input" data-rating="1"></i>
+                            <i class="bi bi-star rating-input" data-rating="2"></i>
+                            <i class="bi bi-star rating-input" data-rating="3"></i>
+                            <i class="bi bi-star rating-input" data-rating="4"></i>
+                            <i class="bi bi-star rating-input" data-rating="5"></i>
+                            <input type="hidden" id="review-rating-input" value="0">
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <label for="review-title" class="form-label">評論標題</label>
+                          <input type="text" class="form-control" id="review-title" required>
+                        </div>
+                        <div class="col-12">
+                          <label for="review-content" class="form-label">評論內容</label>
+                          <textarea class="form-control" id="review-content" rows="4" required></textarea>
+                        </div>
+                        <div class="col-12 text-end">
+                          <button type="submit" class="btn btn-primary">提交評論</button>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="alert alert-success mt-3" id="review-success" style="display: none;">
+                      感謝您的評論！您的反饋已成功提交。
+                    </div>
+                    <div class="alert alert-danger mt-3" id="review-error" style="display: none;">
+                      提交評論時發生錯誤，請稍後再試。
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="related-products mt-5" data-aos="fade-up" data-aos-delay="300">
+          <h3 class="mb-4">您可能也會喜歡</h3>
+          <div class="row gy-4" id="related-products-container">
+            <!-- 相關產品將在此動態添加 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Section -->
+  <footer id="footer" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">BeautySort</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>No.108, Beauty Blvd</p>
+            <p>Taipei 106, Taiwan</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+886 2 1234 5678</span></p>
+            <p><strong>Email:</strong> <span>info@glowbeauty.tw</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+  
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+  
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Skincare Consultation</a></li>
+            <li><a href="#">Makeup Styling</a></li>
+            <li><a href="#">Beauty Workshops</a></li>
+            <li><a href="#">Gift Sets</a></li>
+            <li><a href="#">Personalized Kits</a></li>
+          </ul>
+        </div>
+  
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Collections</h4>
+          <ul>
+            <li><a href="#">Glow Series</a></li>
+            <li><a href="#">Hydration Boost</a></li>
+            <li><a href="#">Daily Essentials</a></li>
+            <li><a href="#">Travel Size</a></li>
+            <li><a href="#">Limited Edition</a></li>
+          </ul>
+        </div>
+  
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Order Tracking</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">GlowBeauty</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  
+  </footer>
+  
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Firebase JS -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <!-- Product Details JS -->
+  <script src="assets/js/product-details.js"></script>
+  <!-- 在頁面底部添加以下內嵌腳本 -->
+<!-- 在頁面底部添加以下內嵌腳本 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('頁面已載入，確保星星評分功能正常');
+    
+    // 等待一秒確保其他腳本都已加載
+    setTimeout(function() {
+      // 直接綁定星星評分功能
+      const stars = document.querySelectorAll('.rating-input');
+      const ratingInput = document.getElementById('review-rating-input');
+      
+      if (stars.length > 0 && ratingInput) {
+        console.log('找到星星評分元素，正在綁定事件');
+        
+        stars.forEach(star => {
+          star.addEventListener('click', function() {
+            console.log('星星被點擊');
+            const rating = parseInt(this.getAttribute('data-rating'));
+            ratingInput.value = rating;
+            
+            stars.forEach((s, index) => {
+              if (index < rating) {
+                s.className = 'bi bi-star-fill rating-input text-warning';
+              } else {
+                s.className = 'bi bi-star rating-input';
+              }
+            });
+            
+            console.log('評分已選擇:', rating);
+          });
+        });
+      }
+      
+      // 確保評論表單提交事件正確綁定
+      const reviewForm = document.getElementById('product-review-form');
+      if (reviewForm) {
+        console.log('找到評論表單，確保提交事件正確綁定');
+        
+        // 防止重複綁定事件
+        reviewForm.addEventListener('submit', function(e) {
+          if (window.isFormSubmitHandled) {
+            return; // 如果已處理，則不重複處理
+          }
+          
+          window.isFormSubmitHandled = true;
+          console.log('表單提交事件觸發');
+          
+          // 5秒後重置提交處理標記，允許再次提交
+          setTimeout(function() {
+            window.isFormSubmitHandled = false;
+          }, 5000);
+        });
+      }
+    }, 1000);
+  });
+</script>
+<!-- 在頁面底部添加以下內嵌腳本 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 直接綁定星星評分功能
+    const stars = document.querySelectorAll('.rating-input');
+    const ratingInput = document.getElementById('review-rating-input');
+    
+    // 綁定星星點擊事件
+    stars.forEach(star => {
+      // 點擊事件
+      star.addEventListener('click', function() {
+        const rating = parseInt(this.getAttribute('data-rating'));
+        ratingInput.value = rating;
+        
+        stars.forEach((s, index) => {
+          if (index < rating) {
+            s.className = 'bi bi-star-fill rating-input text-warning';
+          } else {
+            s.className = 'bi bi-star rating-input';
+          }
+        });
+        
+        console.log('評分選擇:', rating);
+      });
+      
+      // 懸停效果
+      star.addEventListener('mouseover', function() {
+        const hoverRating = parseInt(this.getAttribute('data-rating'));
+        
+        stars.forEach((s, index) => {
+          if (index < hoverRating) {
+            s.classList.add('text-warning');
+            s.classList.replace('bi-star', 'bi-star-fill');
+          }
+        });
+      });
+      
+      star.addEventListener('mouseout', function() {
+        const currentRating = parseInt(ratingInput.value) || 0;
+        
+        stars.forEach((s, index) => {
+          if (index < currentRating) {
+            s.className = 'bi bi-star-fill rating-input text-warning';
+          } else {
+            s.className = 'bi bi-star rating-input';
+          }
+        });
+      });
+    });
+    
+    // 綁定表單提交事件
+    const reviewForm = document.getElementById('product-review-form');
+    if (reviewForm) {
+      reviewForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const productId = new URLSearchParams(window.location.search).get('id');
+        if (!productId) {
+          console.error('找不到產品 ID');
+          document.getElementById('review-error').textContent = '找不到產品資訊，請重新整理頁面後再試。';
+          document.getElementById('review-error').style.display = 'block';
+          return;
+        }
+        
+        const name = document.getElementById('reviewer-name').value;
+        const email = document.getElementById('reviewer-email').value;
+        const title = document.getElementById('review-title').value || '產品評論';
+        const content = document.getElementById('review-content').value;
+        const rating = parseInt(document.getElementById('review-rating-input').value);
+        
+        // 驗證評分
+        if (rating === 0 || isNaN(rating)) {
+          alert('請選擇評分');
+          return;
+        }
+        
+        // 建立評論物件
+        const reviewData = {
+          productId: productId,
+          name: name,
+          email: email,
+          title: title,
+          content: content,
+          rating: rating,
+          timestamp: new Date()
+        };
+        
+        // 顯示提交中狀態
+        const submitButton = reviewForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 提交中...';
+        
+        // 檢查 Firebase 是否已初始化
+        if (window.firebase && window.firebase.firestore) {
+          const db = firebase.firestore();
+          
+          db.collection('product-reviews').add({
+            ...reviewData,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          })
+          .then((docRef) => {
+            console.log("評論成功添加，ID:", docRef.id);
+            
+            // 清空表單
+            reviewForm.reset();
+            
+            // 重置星星評分
+            stars.forEach(s => {
+              s.className = 'bi bi-star rating-input';
+            });
+            ratingInput.value = 0;
+            
+            // 顯示成功訊息
+            document.getElementById('review-success').style.display = 'block';
+            setTimeout(() => {
+              document.getElementById('review-success').style.display = 'none';
+            }, 5000);
+            
+            // 直接將新評論添加到頁面
+            addNewReviewToUI(reviewData);
+          })
+          .catch((error) => {
+            console.error("添加評論時出錯:", error);
+            document.getElementById('review-error').style.display = 'block';
+          })
+          .finally(() => {
+            // 復原按鈕狀態
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+          });
+        } else {
+          // 模擬成功提交
+          console.log("Firebase 未初始化，直接添加到 UI");
+          
+          // 清空表單
+          reviewForm.reset();
+          
+          // 重置星星評分
+          stars.forEach(s => {
+            s.className = 'bi bi-star rating-input';
+          });
+          ratingInput.value = 0;
+          
+          // 顯示成功訊息
+          document.getElementById('review-success').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('review-success').style.display = 'none';
+          }, 5000);
+          
+          // 直接將新評論添加到頁面
+          addNewReviewToUI(reviewData);
+          
+          // 復原按鈕狀態
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonText;
+        }
+      });
+    }
+
+// 添加新評論到頁面的函數
+function addNewReviewToUI(review) {
+      const reviewsContainer = document.getElementById('reviews-container');
+      const noReviewsMessage = document.getElementById('no-reviews-message');
+      
+      // 檢查評論是否已經存在於頁面上
+      const reviewId = review.id || review.localId || `review-${Date.now()}`;
+      const existingReview = document.querySelector(`[data-review-id="${reviewId}"]`);
+      
+      // 如果評論已存在，不再添加
+      if (existingReview) {
+        console.log('評論已存在，不重複添加:', reviewId);
+        return;
+      }
+      
+      // 隱藏「沒有評論」訊息
+      if (noReviewsMessage) {
+        noReviewsMessage.style.display = 'none';
+      }
+      
+      // 創建評論元素
+      const reviewElement = document.createElement('div');
+      reviewElement.className = 'review-item p-4 border-bottom';
+      reviewElement.setAttribute('data-review-id', reviewId);
+      
+      // 生成星星 HTML
+      const starsHTML = Array(5).fill('').map((_, i) => 
+        `<i class="bi bi-star${i < review.rating ? '-fill' : ''} text-warning"></i>`
+      ).join('');
+      
+      // 格式化日期
+      const date = review.timestamp || new Date();
+      const formattedDate = formatDateYMD ? formatDateYMD(date) : review.timestamp.toLocaleDateString();
+      
+      // 設置評論 HTML - 不包含頭像
+      reviewElement.innerHTML = `
+        <h4 class="review-title mb-2">${review.title || '很棒的產品'}</h4>
+        <div class="d-flex align-items-center mb-2">
+          <div class="me-2">
+            ${starsHTML}
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-3">
+          <div>
+            <div class="reviewer-name fw-medium">${review.name}</div>
+            <div class="review-date text-muted">${formattedDate}</div>
+          </div>
+        </div>
+        <p class="review-content">${review.content}</p>
+      `;
+      
+      // 如果評論容器有加載提示，先清除
+      if (reviewsContainer.querySelector('.spinner-border')) {
+        reviewsContainer.innerHTML = '';
+      }
+      
+      // 插入到評論列表的開頭
+      if (reviewsContainer.firstChild) {
+        reviewsContainer.insertBefore(reviewElement, reviewsContainer.firstChild);
+      } else {
+        reviewsContainer.appendChild(reviewElement);
+      }
+      
+      console.log('新評論已添加到頁面:', reviewId);
+    }
+    
+    // 添加日期格式化函數
+    function formatDateYMD(timestamp) {
+      const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      return `${year}/${month}/${day}`;
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+/* Login/Register Page Styles */
+:root {
+  --primary-color: #4e73df;
+  --primary-dark: #3a56b0;
+  --secondary-color: #f8f9fa;
+  --text-color: #444444;
+  --border-color: #e0e0e0;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  color: var(--text-color);
+  background-color: #f7f8fc;
+}
+
+main {
+  padding-top: 100px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form-container {
+  background: #fff;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: var(--shadow);
+  max-width: 550px;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.login-header p {
+  color: #777;
+}
+
+/* Form Styles */
+.form-floating .form-control {
+  border: 1px solid var(--border-color);
+  padding: 12px 15px;
+  height: calc(3.5rem + 2px);
+}
+
+.form-floating > label {
+  padding: 1rem 1rem;
+}
+
+.form-floating .form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.1);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 500;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.btn-lg {
+  padding: 15px 20px;
+}
+
+/* Social Login Styles */
+.social-login {
+  margin-top: 2rem;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--border-color);
+  z-index: 0;
+}
+
+.divider span {
+  position: relative;
+  background-color: white;
+  padding: 0 15px;
+  z-index: 1;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.btn-google:hover { background-color: #f2f2f2; }
+.btn-facebook:hover { background-color: #3b5998; color: white; }
+.btn-apple:hover { background-color: #000; color: white; }
+
+.btn-icon i {
+  font-size: 1.5rem;
+}
+
+/* Tab Navigation */
+.nav-tabs .nav-link {
+  color: var(--color-default);
+  font-weight: 500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 16px;
+}
+ .nav-tabs .nav-link.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+.nav-tabs .nav-link:hover:not(.active) {
+  border-color: transparent;
+  color: var(--primary-dark);
+}
+
+/* Profile Section Styles */
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-body {
+  padding: 1.5rem;
+  background-color: var(--secondary-color);
+  border-radius: 10px;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.profile-info {
+  margin-bottom: 2rem;
+}
+
+.profile-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.profile-info-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.profile-info-value {
+  font-weight: 400;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.forgot-password {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-form-container {
+    padding: 30px 20px;
+  }
+  
+  .profile-actions {
+    flex-direction: column;
+  }
+  
+  .profile-actions .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .social-buttons {
+    flex-wrap: wrap;
+  }
+}
+
+/* Alert styling */
+.alert {
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+/* Animation for form transitions */
+.tab-content > .tab-pane {
+  transition: all 0.3s ease;
+}
+
+/* Custom checkbox style */
+.form-check-input {
+  border: 1px solid #adb5bd;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
