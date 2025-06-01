@@ -1447,31 +1447,167 @@ function checkAndFixReviewsDisplay() {
   }
 }
 
-// 4. 修改 DOMContentLoaded 事件處理，確保評論初始化正確
+// 改進的跨裝置評論同步機制
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("頁面已加載，開始初始化");
+  // 確保 Firebase 初始化完成後再進行評論同步
+  let syncAttempts = 0;
+  const maxSyncAttempts = 5;
   
-  // 取得產品 ID
-  const productId = getUrlParameter('id');
-  if (!productId) {
-    console.error("找不到產品 ID");
-    document.getElementById('reviews-container').innerHTML = 
-      '<div class="alert alert-warning">找不到產品資訊，請返回產品列表頁。</div>';
-    return;
+  function attemptSyncReviews() {
+    if (firebaseInitialized) {
+      console.log('Firebase 已初始化，開始同步評論...');
+      syncReviewsWithFirebase();
+    } else if (syncAttempts < maxSyncAttempts) {
+      syncAttempts++;
+      console.log(`Firebase 未初始化，${500 * syncAttempts}ms 後重試...`);
+      setTimeout(attemptSyncReviews, 500 * syncAttempts);
+    } else {
+      console.warn('無法初始化 Firebase，將使用本地評論');
+    }
   }
   
-  console.log(`加載產品 ID: ${productId} 的詳細資訊`);
-  
-  // 載入產品詳情和評論
-  loadProductDetails();
-  
-  // 在頁面加載後延遲檢查評論狀態
-  setTimeout(checkReviewsStatus, 2000);
-  
-  // 額外的檢查，確保評論顯示
-  setTimeout(checkAndFixReviewsDisplay, 3000);
+  // 1秒後嘗試同步，給 Firebase 初始化時間
+  setTimeout(attemptSyncReviews, 1000);
 });
 
+// 同步 Firebase 和本地評論
+function syncReviewsWithFirebase() {
+  const productId = getUrlParameter('id');
+  if (!productId || !firebaseInitialized) return;
+  
+  console.log(`開始同步產品 ${productId} 的評論...`);
+  
+  // 從 Firebase 讀取所有評論
+  db.collection('product-reviews')
+    .where('productId', '==', productId)
+    .get()
+    .then((snapshot) => {
+      console.log(`從 Firebase 獲取到 ${snapshot.size} 條評論`);
+      
+      // 獲取當前本地評論
+      let localReviews = JSON.parse(localStorage.getItem('product-reviews') || '{}');
+      if (!localReviews[productId]) {
+        localReviews[productId] = [];
+      }
+      
+      // 記錄已處理的評論 ID
+      const processedIds = new Set();
+      
+      // 處理 Firebase 評論
+      snapshot.forEach(doc => {
+        const firebaseReview = doc.data();
+        const reviewId = doc.id;
+        processedIds.add(reviewId);
+        
+        // 檢查評論是否已在本地存儲中
+        const localIndex = localReviews[productId].findIndex(r => 
+          (r.id && r.id === reviewId) || 
+          (firebaseReview.localId && r.localId === firebaseReview.localId) ||
+          (r.email === firebaseReview.email && r.title === firebaseReview.title && r.content === firebaseReview.content)
+        );
+        
+        if (localIndex >= 0) {
+          // 更新現有評論，確保有 Firebase ID
+          localReviews[productId][localIndex] = {
+            ...firebaseReview,
+            id: reviewId,
+            timestamp: firebaseReview.timestamp && typeof firebaseReview.timestamp.toDate === 'function' 
+              ? firebaseReview.timestamp.toDate().toISOString() 
+              : (firebaseReview.timestamp ? new Date(firebaseReview.timestamp).toISOString() : new Date().toISOString())
+          };
+        } else {
+          // 添加新評論
+          localReviews[productId].push({
+            ...firebaseReview,
+            id: reviewId,
+            timestamp: firebaseReview.timestamp && typeof firebaseReview.timestamp.toDate === 'function' 
+              ? firebaseReview.timestamp.toDate().toISOString() 
+              : (firebaseReview.timestamp ? new Date(firebaseReview.timestamp).toISOString() : new Date().toISOString())
+          });
+        }
+      });
+      
+      // 將本地未同步到 Firebase 的評論上傳
+      const unsyncedReviews = localReviews[productId].filter(r => !r.id || !processedIds.has(r.id));
+      console.log(`發現 ${unsyncedReviews.length} 條未同步的本地評論`);
+      
+      // 嘗試上傳未同步的評論到 Firebase
+      unsyncedReviews.forEach(review => {
+        // 避免重複上傳正在處理的評論
+        if (review.syncInProgress) return;
+        
+        review.syncInProgress = true;
+        
+        // 創建要上傳的評論資料
+        const reviewToUpload = {
+          ...review,
+          productId: productId,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        // 移除本地屬性
+        delete reviewToUpload.id;
+        delete reviewToUpload.syncInProgress;
+        
+        // 上傳到 Firebase
+        db.collection('product-reviews').add(reviewToUpload)
+          .then(docRef => {
+            console.log(`評論成功上傳到 Firebase，ID: ${docRef.id}`);
+            
+            // 更新本地評論的 ID
+            const idx = localReviews[productId].findIndex(r => 
+              r.localId === review.localId || 
+              (r.email === review.email && r.title === review.title && r.content === review.content)
+            );
+            
+            if (idx >= 0) {
+              localReviews[productId][idx].id = docRef.id;
+              delete localReviews[productId][idx].syncInProgress;
+              localStorage.setItem('product-reviews', JSON.stringify(localReviews));
+            }
+          })
+          .catch(error => {
+            console.error('上傳評論到 Firebase 失敗:', error);
+            delete review.syncInProgress;
+          });
+      });
+      
+      // 保存更新後的本地評論
+      localStorage.setItem('product-reviews', JSON.stringify(localReviews));
+      
+      // 重新顯示評論
+      loadProductReviews(productId);
+    })
+    .catch(error => {
+      console.error('同步評論時發生錯誤:', error);
+    });
+}
+
+// 處理網絡恢復時的自動同步
+window.addEventListener('online', function() {
+  console.log('網絡已恢復，嘗試同步評論...');
+  if (firebaseInitialized) {
+    setTimeout(syncReviewsWithFirebase, 1000);
+  }
+});
+
+// 當 Firebase 初始化狀態變更時
+function onFirebaseStatusChange(isInitialized) {
+  if (isInitialized && !firebaseInitialized) {
+    firebaseInitialized = true;
+    console.log('Firebase 初始化完成，開始同步評論...');
+    syncReviewsWithFirebase();
+  }
+}
+
+// 監控 Firebase 初始化狀態
+let firebaseCheckInterval = setInterval(function() {
+  if (firebase.apps.length > 0 && db) {
+    clearInterval(firebaseCheckInterval);
+    firebaseInitialized = true;
+    onFirebaseStatusChange(true);
+  }
+}, 1000);
 // 5. 改進檢查評論狀態的函數，可以嘗試修復顯示問題
 function checkReviewsStatus() {
   const productId = getUrlParameter('id');
