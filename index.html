@@ -1612,157 +1612,110 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 </script>
 <script>
-  // 產品篩選功能 - 跨所有類別顯示熱銷/新品
   document.addEventListener('DOMContentLoaded', function() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    
-    // 為所有篩選按鈕添加點擊事件
-    filterButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        // 移除所有按鈕的活躍狀態
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        
-        // 添加當前按鈕的活躍狀態
-        this.classList.add('active');
-        
-        // 獲取篩選類型
-        const filterType = this.getAttribute('data-filter');
-        
-        // 如果選擇了全部商品，正常顯示所有標籤頁
-        if (filterType === 'all') {
-          resetTabsAndCards();
-          return;
-        }
-        
-        // 否則進行全局篩選
-        applyGlobalFilter(filterType);
-      });
-    });
-    
-    // 重置所有標籤頁和卡片到初始狀態
-    function resetTabsAndCards() {
-      // 恢復標籤頁切換功能
-      document.querySelectorAll('.nav-tabs .nav-link').forEach(link => {
-        link.classList.remove('disabled');
-      });
+    // 獲取網頁標題、描述和URL並設置分享鏈接
+    function setupShareLinks() {
+      const productName = document.getElementById('product-name').textContent;
+      const productDesc = document.getElementById('product-short-desc').textContent;
+      const productImageUrl = document.getElementById('main-product-image').src;
+      const currentUrl = window.location.href;
       
-      // 重置所有卡片顯示
-      document.querySelectorAll('.product-card').forEach(card => {
-        const cardParent = card.closest('.col-lg-3');
-        if (cardParent) cardParent.style.display = 'block';
-      });
+      // 獲取所有分享按鈕
+      const fbShareLink = document.querySelector('.product-share a:nth-child(2)');
+      const twitterShareLink = document.querySelector('.product-share a:nth-child(3)');
+      const lineShareLink = document.querySelector('.product-share a:nth-child(4)');
+      const pinterestShareLink = document.querySelector('.product-share a:nth-child(5)');
       
-      // 移除所有空訊息
-      document.querySelectorAll('.empty-filter-message').forEach(msg => {
-        msg.remove();
+      // 添加對應的類名以便於識別
+      if (fbShareLink) fbShareLink.classList.add('share-facebook');
+      if (twitterShareLink) twitterShareLink.classList.add('share-twitter');
+      if (lineShareLink) lineShareLink.classList.add('share-line');
+      if (pinterestShareLink) pinterestShareLink.classList.add('share-pinterest');
+
+      // Facebook分享
+      fbShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&quote=${encodeURIComponent(productName + ' - ' + productDesc)}`;
+        window.open(fbShareUrl, 'facebook-share', 'width=580,height=650');
       });
-      
-      // 確保標籤頁系統正常工作
-      const activeTab = document.querySelector('.nav-tabs .nav-link.active');
-      if (activeTab) {
-        const targetId = activeTab.getAttribute('data-bs-target');
-        document.querySelectorAll('.tab-pane').forEach(pane => {
-          pane.classList.remove('active', 'show');
-        });
-        const activePane = document.querySelector(targetId);
-        if (activePane) {
-          activePane.classList.add('active', 'show');
-        }
-      }
+
+      // Twitter/X分享
+      twitterShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(productName)}&url=${encodeURIComponent(currentUrl)}`;
+        window.open(twitterShareUrl, 'twitter-share', 'width=550,height=420');
+      });
+
+      // LINE分享
+      lineShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(currentUrl)}`;
+        window.open(lineShareUrl, 'line-share');
+      });
+
+      // Pinterest分享
+      pinterestShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const pinterestShareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(productImageUrl)}&description=${encodeURIComponent(productName + ' - ' + productDesc)}`;
+        window.open(pinterestShareUrl, 'pinterest-share', 'width=750,height=550');
+      });
     }
-    
-    // 應用全局篩選 (跨所有類別)
-    function applyGlobalFilter(filterType) {
-      // 激活第一個標籤頁作為容器
-      const firstTab = document.querySelector('.nav-tabs .nav-link');
-      const firstTabContent = document.querySelector('.tab-content .tab-pane');
+
+    // 確保頁面元素都已載入後再設置分享鏈接
+    setTimeout(setupShareLinks, 1000);
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 獲取網頁標題、描述和URL並設置分享鏈接
+    function setupShareLinks() {
+      const productName = document.getElementById('product-name').textContent;
+      const productDesc = document.getElementById('product-short-desc').textContent;
+      const productImageUrl = document.getElementById('main-product-image').src;
+      const currentUrl = window.location.href;
       
-      if (!firstTab || !firstTabContent) return;
+      // 獲取所有分享按鈕
+      const fbShareLink = document.querySelector('.product-share a:nth-child(2)');
+      const twitterShareLink = document.querySelector('.product-share a:nth-child(3)');
+      const lineShareLink = document.querySelector('.product-share a:nth-child(4)');
+      const pinterestShareLink = document.querySelector('.product-share a:nth-child(5)');
       
-      // 禁用標籤頁切換功能，讓用戶只看到篩選結果
-      document.querySelectorAll('.nav-tabs .nav-link').forEach(link => {
-        link.classList.add('disabled');
+      // 添加對應的類名以便於識別
+      if (fbShareLink) fbShareLink.classList.add('share-facebook');
+      if (twitterShareLink) twitterShareLink.classList.add('share-twitter');
+      if (lineShareLink) lineShareLink.classList.add('share-line');
+      if (pinterestShareLink) pinterestShareLink.classList.add('share-pinterest');
+
+      // Facebook分享
+      fbShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&quote=${encodeURIComponent(productName + ' - ' + productDesc)}`;
+        window.open(fbShareUrl, 'facebook-share', 'width=580,height=650');
       });
-      
-      // 激活第一個標籤頁
-      document.querySelectorAll('.nav-tabs .nav-link').forEach(link => {
-        link.classList.remove('active', 'show');
+
+      // Twitter/X分享
+      twitterShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(productName)}&url=${encodeURIComponent(currentUrl)}`;
+        window.open(twitterShareUrl, 'twitter-share', 'width=550,height=420');
       });
-      firstTab.classList.add('active', 'show');
-      
-      // 顯示第一個標籤頁內容
-      document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('active', 'show');
+
+      // LINE分享
+      lineShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(currentUrl)}`;
+        window.open(lineShareUrl, 'line-share');
       });
-      firstTabContent.classList.add('active', 'show');
-      
-      // 清空第一個標籤頁的現有內容
-      const firstTabRow = firstTabContent.querySelector('.row');
-      if (firstTabRow) {
-        // 保存原始內容以便恢復
-        if (!firstTabContent.hasAttribute('data-original-content')) {
-          firstTabContent.setAttribute('data-original-content', firstTabRow.innerHTML);
-        }
-        firstTabRow.innerHTML = '';
-      }
-      
-      // 搜索所有符合篩選條件的產品卡片
-      let filteredCards = [];
-      document.querySelectorAll('.tab-pane .product-card').forEach(card => {
-        // 檢查產品是否有相應的標籤
-        const hasHotBadge = card.querySelector('.badge.bg-danger') !== null;
-        const hasNewBadge = card.querySelector('.badge.bg-primary') !== null;
-        
-        // 根據篩選類型選擇產品
-        if ((filterType === 'hot' && hasHotBadge) || (filterType === 'new' && hasNewBadge)) {
-          // 複製這個產品卡片到第一個標籤頁
-          filteredCards.push(card.closest('.col-lg-3').cloneNode(true));
-        }
+
+      // Pinterest分享
+      pinterestShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const pinterestShareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(productImageUrl)}&description=${encodeURIComponent(productName + ' - ' + productDesc)}`;
+        window.open(pinterestShareUrl, 'pinterest-share', 'width=750,height=550');
       });
-      
-      // 將篩選後的卡片添加到第一個標籤頁
-      if (filteredCards.length > 0) {
-        filteredCards.forEach(card => {
-          firstTabRow.appendChild(card);
-        });
-      } else {
-        // 如果沒有符合條件的產品，顯示提示訊息
-        const emptyMessage = document.createElement('div');
-        emptyMessage.className = 'empty-filter-message text-center py-5 w-100';
-        emptyMessage.innerHTML = '<p class="fs-5 text-muted">目前沒有符合篩選條件的產品</p>';
-        firstTabRow.appendChild(emptyMessage);
-      }
     }
-    
-    // 點擊「全部商品」按鈕時恢復標籤頁原始狀態
-    document.querySelector('.filter-btn[data-filter="all"]').addEventListener('click', function() {
-      // 恢復標籤頁功能
-      document.querySelectorAll('.nav-tabs .nav-link').forEach(link => {
-        link.classList.remove('disabled');
-      });
-      
-      // 恢復原始內容
-      document.querySelectorAll('.tab-pane').forEach(pane => {
-        if (pane.hasAttribute('data-original-content')) {
-          const row = pane.querySelector('.row');
-          if (row) {
-            row.innerHTML = pane.getAttribute('data-original-content');
-          }
-          pane.removeAttribute('data-original-content');
-        }
-      });
-      
-      // 重新激活之前的活動標籤頁
-      const activeTab = document.querySelector('.nav-tabs .nav-link.active');
-      if (activeTab) {
-        activeTab.click();
-      }
-    });
-    
-    // 頁面加載時初始化為「全部商品」
-    const allButton = document.querySelector('.filter-btn[data-filter="all"]');
-    if (allButton) {
-      allButton.click();
-    }
+
+    // 確保頁面元素都已載入後再設置分享鏈接
+    setTimeout(setupShareLinks, 1000);
   });
 </script>
