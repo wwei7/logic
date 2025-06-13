@@ -317,7 +317,6 @@
             <div class="product-share mt-4">
               <span>分享：</span>
               <a href="#" class="me-2"><i class="bi bi-facebook"></i></a>
-              <a href="#" class="me-2"><i class="bi bi-instagram"></i></a>
               <a href="#" class="me-2"><i class="bi bi-twitter-x"></i></a>
               <a href="#" class="me-2"><i class="bi bi-line"></i></a>
               <a href="#" class="me-2"><i class="bi bi-pinterest"></i></a>
@@ -914,6 +913,60 @@ function addNewReviewToUI(review) {
       const day = date.getDate().toString().padStart(2, '0');
       return `${year}/${month}/${day}`;
     }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 獲取網頁標題、描述和URL並設置分享鏈接
+    function setupShareLinks() {
+      const productName = document.getElementById('product-name').textContent;
+      const productDesc = document.getElementById('product-short-desc').textContent;
+      const productImageUrl = document.getElementById('main-product-image').src;
+      const currentUrl = window.location.href;
+      
+      // 獲取所有分享按鈕
+      const fbShareLink = document.querySelector('.product-share a:nth-child(2)');
+      const twitterShareLink = document.querySelector('.product-share a:nth-child(3)');
+      const lineShareLink = document.querySelector('.product-share a:nth-child(4)');
+      const pinterestShareLink = document.querySelector('.product-share a:nth-child(5)');
+      
+      // 添加對應的類名以便於識別
+      if (fbShareLink) fbShareLink.classList.add('share-facebook');
+      if (twitterShareLink) twitterShareLink.classList.add('share-twitter');
+      if (lineShareLink) lineShareLink.classList.add('share-line');
+      if (pinterestShareLink) pinterestShareLink.classList.add('share-pinterest');
+
+      // Facebook分享
+      fbShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&quote=${encodeURIComponent(productName + ' - ' + productDesc)}`;
+        window.open(fbShareUrl, 'facebook-share', 'width=580,height=650');
+      });
+
+      // Twitter/X分享
+      twitterShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(productName)}&url=${encodeURIComponent(currentUrl)}`;
+        window.open(twitterShareUrl, 'twitter-share', 'width=550,height=420');
+      });
+
+      // LINE分享
+      lineShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(currentUrl)}`;
+        window.open(lineShareUrl, 'line-share');
+      });
+
+      // Pinterest分享
+      pinterestShareLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const pinterestShareUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(productImageUrl)}&description=${encodeURIComponent(productName + ' - ' + productDesc)}`;
+        window.open(pinterestShareUrl, 'pinterest-share', 'width=750,height=550');
+      });
+    }
+
+    // 確保頁面元素都已載入後再設置分享鏈接
+    setTimeout(setupShareLinks, 1000);
   });
 </script>
 </body>

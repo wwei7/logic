@@ -2474,3 +2474,126 @@ section,
 .badge {
   font-weight: 500;
 }
+
+/* 篩選按鈕樣式 */
+.product-filters {
+  margin-bottom: 30px;
+}
+
+.filter-btn {
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+  
+  .filter-btn.active {
+    font-weight: 600;
+  }
+  
+  .filter-btn[data-filter="hot"].active {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+  }
+  
+  .filter-btn[data-filter="new"].active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+  }
+  
+  /* 淡入淡出效果 */
+  .product-card {
+    transition: opacity 0.4s ease;
+  }
+  
+  /* 空篩選結果提示 */
+  .empty-filter-message {
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  /* 分享按鈕與選單樣式 */
+  .share-btn {
+    padding: 0.25rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .share-btn:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+  }
+
+  .share-menu {
+    min-width: 180px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: none;
+    border-radius: 0.5rem;
+  }
+
+  .share-menu .dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+    margin: 0.1rem 0;
+  }
+
+  .share-menu .dropdown-item:active,
+  .share-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .share-facebook:hover {
+    color: #3b5998;
+  }
+
+  .share-twitter:hover {
+    color: #1da1f2;
+  }
+
+  .share-line:hover {
+    color: #00b900;
+  }
+
+  .share-whatsapp:hover {
+    color: #25d366;
+  }
+
+  .share-copy:hover {
+    color: #6c757d;
+  }
+
+  /* 複製成功提示樣式 */
+  .copy-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1050;
+    display: none;
+    font-size: 0.9rem;
+  }
+
+  /* 優化行動裝置上的分享按鈕顯示 */
+  @media (max-width: 576px) {
+    .action-buttons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .share-btn {
+      padding: 0.25rem 0.4rem;
+    }
+  }
